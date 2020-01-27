@@ -30,6 +30,19 @@
 					<td><%= attachment_image_tag(user, :profile_image, :fill, 50, 50, fallback: "no-image-mini.jpg") %></td>
 					<td><%= user.name%></td>
 					<td><%= link_to "Show", user_path(user.id), class: "user_#{user.id}" %></td>
+					<td>フォロー数：<%= user.followings.count %></td>
+					<td>フォロワー数：<%= user.followers.count %></td>
+					<td>
+						<% unless current_user?(user) %>
+							<div id="follow_form">
+							<% if current_user.following?(user) %>
+							<%= button_to "フォローを外す", {:controller =>"relationships", :action => "destroy"},{method: :delete,params: {user_id: user.id}} %>
+							<% else %>
+							<%= button_to "フォローする", {:controller =>"relationships", :action => "create"},{method: :post,params: {user_id: user.id}} %>
+							<% end %>
+						</div>
+					<% end %>
+					</td>
 				</tr>
 				<% end %>
 			</tbody>
